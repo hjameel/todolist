@@ -6,6 +6,7 @@ import todo
 
 class EndToEndTest(LiveServerTestCase):
     def setUp(self):
+        todo.init_db()
         self.driver = webdriver.Firefox()
 
     def tearDown(self):
