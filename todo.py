@@ -1,4 +1,3 @@
-import config
 import os
 
 from contextlib import closing
