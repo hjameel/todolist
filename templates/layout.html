@@ -3,9 +3,9 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
     <h1>Todo</h1>
-    <ul class=entries>
-        {% for entry in entries %}
-        <li>{{ entry.text|safe }}
+    <ul class=todos>
+        {% for todo in todos %}
+        <li>{{ todo|safe }}
         {% else %}
         <li><em>No todos here so far</em>
         {% endfor %}
