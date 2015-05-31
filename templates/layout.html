@@ -5,7 +5,7 @@
     <h1>Todo</h1>
     <ul class=todos>
         {% for todo in todos %}
-        <li>{{ todo|safe }}
+        <li>{{ todo }}
         {% else %}
         <li><em>No todos here so far</em>
         {% endfor %}

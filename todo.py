@@ -1,8 +1,7 @@
 import os
 
 from contextlib import closing
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+from flask import Flask, request, g, redirect, url_for, render_template, flash
 from sqlite3 import dbapi2 as sqlite3
 
 app = Flask(__name__)
@@ -37,7 +36,8 @@ def teardown_request(exception):
 @app.route("/")
 def todo():
     cur = g.db.execute("select todo from todos order by id desc")
-    return render_template("layout.html", todos=cur.fetchall())
+    todos = [todo[0] for todo in cur.fetchall()]
+    return render_template("layout.html", todos=todos)
 
 @app.route("/add", methods = ["POST"])
 def add():
@@ -48,4 +48,5 @@ def add():
     return redirect(url_for("todo"))
 
 if __name__ == "__main__":
+    init_db()
     app.run()
