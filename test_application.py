@@ -2,21 +2,21 @@ from flask.ext.testing import LiveServerTestCase
 from selenium import webdriver
 
 import unittest
-import todo
+import application
 
 class EndToEndTest(LiveServerTestCase):
     def setUp(self):
-        todo.init_db()
+        application.init_db()
         self.driver = webdriver.Firefox()
 
     def tearDown(self):
         self.driver.close()
 
     def create_app(self):
-        application = todo.application
-        application.config["Testing"] = True
-        application.config["LIVESERVER_PORT"] = 8943
-        return application
+        app = application.application
+        app.config["Testing"] = True
+        app.config["LIVESERVER_PORT"] = 8943
+        return app
 
     def test_displays_a_welcome_page(self):
         self.driver.get(self.get_server_url())
