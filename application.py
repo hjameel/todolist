@@ -23,6 +23,10 @@ def init_db():
 def connect_db():
     return sqlite3.connect(application.config["DATABASE"])
 
+@application.before_first_request
+def before_first_request():
+    init_db()
+
 @application.before_request
 def before_request():
     g.db = connect_db()
@@ -48,5 +52,4 @@ def add():
     return redirect(url_for("todo"))
 
 if __name__ == "__main__":
-    init_db()
     application.run()
