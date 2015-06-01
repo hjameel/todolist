@@ -5,7 +5,7 @@
     <h1>Todo</h1>
     <ul class=todos>
         {% for todo in todos %}
-        <li>{{ todo }}
+        <li><form action="{{ url_for('delete') }}" method=post><input type=hidden name=id value={{ todo.id }}><input id=id_delete type=submit value=Done></form> {{ todo.text }}
         {% else %}
         <li><em>No todos here so far</em>
         {% endfor %}

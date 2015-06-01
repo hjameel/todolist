@@ -38,3 +38,9 @@ class EndToEndTest(LiveServerTestCase):
         self.assertIn(
                 todo_text,
                 self.driver.find_element_by_tag_name("body").text)
+
+        self.driver.find_element_by_id("id_delete").click()
+
+        self.assertNotIn(
+                todo_text,
+                self.driver.find_element_by_tag_name("body").text)

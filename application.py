@@ -39,16 +39,21 @@ def teardown_request(exception):
 
 @application.route("/")
 def todo():
-    cur = g.db.execute("select todo from todos order by id desc")
-    todos = [todo[0] for todo in cur.fetchall()]
+    cur = g.db.execute("select id, todo from todos order by id desc")
+    todos = [{"id":todo[0], "text":todo[1] } for todo in cur.fetchall()]
     return render_template("layout.html", todos=todos)
 
 @application.route("/add", methods = ["POST"])
 def add():
-    g.db.execute("insert into todos (todo) values (?)",
-            [request.form["todo"]])
+    g.db.execute("insert into todos (todo) values (?)", [request.form["todo"]])
     g.db.commit()
     flash("New card was added")
+    return redirect(url_for("todo"))
+
+@application.route("/delete", methods = ["POST"])
+def delete():
+    g.db.execute("delete from todos where id = ?", [request.form["id"]])
+    g.db.commit()
     return redirect(url_for("todo"))
 
 if __name__ == "__main__":
