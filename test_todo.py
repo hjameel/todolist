@@ -13,10 +13,10 @@ class EndToEndTest(LiveServerTestCase):
         self.driver.close()
 
     def create_app(self):
-        app = todo.app
-        app.config["Testing"] = True
-        app.config["LIVESERVER_PORT"] = 8943
-        return app
+        application = todo.application
+        application.config["Testing"] = True
+        application.config["LIVESERVER_PORT"] = 8943
+        return application
 
     def test_displays_a_welcome_page(self):
         self.driver.get(self.get_server_url())

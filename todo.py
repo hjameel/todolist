@@ -4,42 +4,42 @@ from contextlib import closing
 from flask import Flask, request, g, redirect, url_for, render_template, flash
 from sqlite3 import dbapi2 as sqlite3
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, "todo.db"),
+application.config.update(dict(
+    DATABASE=os.path.join(application.root_path, "todo.db"),
     SECRET_KEY="development key",
     USERNAME="admin",
     PASSWORD="default"
 ))
-app.config.from_envvar("TODO_SETTINGS", silent=True)
+application.config.from_envvar("TODO_SETTINGS", silent=True)
 
 def init_db():
     with closing(connect_db()) as db:
-        with app.open_resource("schema.sql", mode="r") as f:
+        with application.open_resource("schema.sql", mode="r") as f:
             db.cursor().executescript(f.read())
         db.commit()
 
 def connect_db():
-    return sqlite3.connect(app.config["DATABASE"])
+    return sqlite3.connect(application.config["DATABASE"])
 
-@app.before_request
+@application.before_request
 def before_request():
     g.db = connect_db()
 
-@app.teardown_request
+@application.teardown_request
 def teardown_request(exception):
     db = getattr(g, "db", None)
     if db is not None:
         db.close()
 
-@app.route("/")
+@application.route("/")
 def todo():
     cur = g.db.execute("select todo from todos order by id desc")
     todos = [todo[0] for todo in cur.fetchall()]
     return render_template("layout.html", todos=todos)
 
-@app.route("/add", methods = ["POST"])
+@application.route("/add", methods = ["POST"])
 def add():
     g.db.execute("insert into todos (todo) values (?)",
             [request.form["todo"]])
@@ -49,4 +49,4 @@ def add():
 
 if __name__ == "__main__":
     init_db()
-    app.run()
+    application.run()
