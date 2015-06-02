@@ -47,7 +47,7 @@ def todo():
 def add():
     g.db.execute("insert into todos (todo) values (?)", [request.form["todo"]])
     g.db.commit()
-    flash("New card was added")
+    flash("New todo was added")
     return redirect(url_for("todo"))
 
 @application.route("/delete", methods = ["POST"])
